@@ -1,0 +1,62 @@
+<!--this will be a list page to show every newsletter and article-->
+
+{% extends 'base.html' %}
+
+<!--|-->
+
+<!--This is for the title-->
+{% block title %}
+News Letters
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+<a style="color: light blue;">News Letters</a>
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    {% if news_letters %}
+        {% for news_letter in news_letters %}
+            <div>
+                <h2>{{ news_letter.title }}</h2>
+                <div>
+                    <h4 style="color: grey;">{{ news_letter.created_at|date:"d/m/Y" }}</h4>
+                </div>
+                <div>
+                    <h3>{{ news_letter.author }}</h3>
+                </div>
+                {% if user.editor == True %}
+                    <hr>
+                    <div style="background-color: lightgrey;">
+                        <h5 style="color: blue;">Editor's Options</h5>
+                        <a href="{% url 'News_Letter_Edit' title=news_letter.title %}"
+                        class="btn btn-primary">Edit</a>
+                        <a href="{% url 'News_Letter_Delete' title=news_letter.title %}"
+                        class="btn btn-danger">Delete</a>
+                    </div>
+                {% endif %}
+                <hr>
+                <div>
+                    <a href="{% url 'Article_View' title=news_letter.title %}"
+                       class="btn btn-primary">View</a>
+                    {% if news_letter.title in subscriptions %}
+                        <a href="{% url 'Unsubscribe' title=news_letter.title %}"
+                           class="btn btn-info">Unsubscribe</a>
+                    {% else %}
+                        <a href="{% url 'Subscribe' title=news_letter.title %}"
+                           class="btn btn-primary">Subscribe</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if request.user.groups.filter(name="Publisher").exists %}
+        <hr>
+        <a href="{% url 'News_Letter_Create' %}"
+           class="btn btn-primary">Create News Letter</a>
+    {% endif %}
+{% endblock %}

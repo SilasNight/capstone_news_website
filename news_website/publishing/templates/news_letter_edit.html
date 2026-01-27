@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+<!--|-->
+
+<!--This is for the title-->
+{% block title %}
+{{ news_letter.title }} - Edit
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+{{ news_letter.title }} - Edit
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+<form method="POST" >
+    {% csrf_token %}
+    <div>
+        <label for="title">Title</label>
+        <input class="form-control" type="text" id="title" name="title" value="{{ news_letter.title }}" required>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'News_Letter_Delete' title=news_letter.title %}"
+    class="btn btn-danger">Delete</a>
+    <hr>
+    <a href="{% url 'Landing_Page' %}" class="btn btn-primary">Back</a>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</form>
+{% endblock %}

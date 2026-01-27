@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+<!--import article-->
+
+<!--This is for the title-->
+{% block title %}
+{{ article.news_letter.title }} - {{ article.title }}
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+{{ article.title }}
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+    <div>
+        <h2>News Letter - {{ article.news_letter.title }}</h2>
+        <a style="color: grey">{{ article.news_letter.created_at|date:"d/m/Y" }}</a>
+        <h3>Article Title - {{ article.title }}</h3>
+        <a style="color: grey">{{ article.created_at|date:"d/m/Y" }}</a>
+        <p>
+            {{ article.content }}
+        </p>
+        {% if article.approved == True %}
+            <h4 style="color: green;">Approved</h4>
+            <hr>
+            <div>
+                <a style="color: light blue"><strong>Editor Info</strong></a>
+                <div>
+                    <h5><strong>Full Name</strong></h5>
+                    {{ editor.first_name }}
+                    {{ editor.last_name }}
+                </div>
+                <div>
+                    <h5><strong>Username</strong></h5>
+                    {{ editor.username }}
+                </div>
+                <div>
+                    <h5><strong>Email</strong></h5>
+                    {{ editor.email }}
+                </div>
+            </div>
+        {% else %}
+            <h4 style="color: red;">Not Approved</h4>
+        {% endif %}
+        <hr>
+        <div>
+            <a style="color: light blue"><strong>Author Info</strong></a>
+            <div>
+                <h5><strong>Full Name</strong></h5>
+                {{ article.author.first_name }}
+                {{ article.author.last_name }}
+            </div>
+            <div>
+                <h5><strong>Username</strong></h5>
+                {{ article.author.username }}
+            </div>
+            <div>
+                <h5><strong>Email</strong></h5>
+                {{ article.author.email }}
+            </div>
+        </div>
+        <hr>
+        <div>
+            <a style="color: light blue"><strong>Publisher Info</strong></a>
+            <div>
+                <h5><strong>Full Name</strong></h5>
+                {{ article.publisher.first_name }}
+                {{ article.publisher.last_name }}
+            </div>
+            <div>
+                <h5><strong>Username</strong></h5>
+                {{ article.publisher.username }}
+            </div>
+            <div>
+                <h5><strong>Email</strong></h5>
+                {{ article.publisher.email }}
+            </div>
+        </div>
+    </div>
+    <hr>
+    <a href="{% url 'Article_View' title=article.news_letter.title %}"
+    class="btn btn-primary">Back</a>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+<!--|-->
+
+<!--This is for the title-->
+{% block title %}
+{{ news_letter.title }} - {{ article.title }}
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+Edit - {{ article.title }}
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+<form method="POST" >
+    {% csrf_token %}
+    <div>
+        <label for="title">Title</label>
+        <input class="form-control" type="text" id="title" name="title" value="{{ article.title }}" required>
+    </div>
+    <div>
+        <label for="content">Content</label>
+        <textarea class="form-control" id="content" name="content" required>{{ article.content }}</textarea>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-primary">Approve</button>
+    <a href="{% url 'Article_Delete' news_letter_title=news_letter.title title=article.title %}">Delete</a>
+</form>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+<!--|-->
+<!--This is for the title-->
+{% block title %}
+Register User
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+Sign Up
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+<form method="POST" >
+    {% csrf_token %}
+    <div>
+        <label for="username">Username</label>
+        <input class="form-control" type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="first_name">First Name</label>
+        <input class="form-control" type="text" id="first_name" name="first_name" required>
+    </div>
+    <div>
+        <label for="last_name">Last Name</label>
+        <input class="form-control" type="text" id="last_name" name="last_name" required>
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input class="form-control" type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input class="form-control" type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <label for="confirm_password">Confirm Password</label>
+        <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
+    </div>
+    <div>
+        <label for="publisher">Publisher</label>
+        <input type="checkbox" id="publisher" name="publisher" value="True">
+    </div>
+    <div>
+        <label for="editor">Editor</label>
+        <input type="checkbox" id="editor" name="editor" value="True">
+    </div>
+    <div>
+        <label for="journalist">Journalist</label>
+        <input type="checkbox" id="journalist" name="journalist" value="True">
+    </div>
+    <hr>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="{% url 'Login' %}" class="btn btn-primary">Back</a>
+</form>
+{% endblock %}
+
+

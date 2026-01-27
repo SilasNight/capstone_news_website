@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+<!--|-->
+
+<!--This is for the title-->
+{% block title %}
+{{ news_letter.title }}
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+Article for {{ news_letter.title }}
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+<form method="POST" >
+    {% csrf_token %}
+    <div>
+        <label for="title">Title</label>
+        <input class="form-control" type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="content">Content</label>
+        <textarea class="form-control" id="content" name="content" required></textarea>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+{% if error %}
+    <p style="color: red;">{{ error }}</p>
+{% endif %}
+{% endblock %}

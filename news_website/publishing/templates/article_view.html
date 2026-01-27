@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+<!--|-->
+
+<!--This is for the title-->
+{% block title %}
+{{ news_letter.title }}
+{% endblock %}
+
+<!--This is for the heading-->
+{% block heading %}
+<a style="color: light blue;">{{ news_letter.title }}</a>
+{% endblock %}
+
+<!--This is for the content-->
+{% block content %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        {% for article in articles %}
+            <div>
+                <h2><strong>{{ article.title }}</strong></h2>
+                {{ article.author }}
+            </div>
+            <div>
+                <h3>{{ article.content }}</h3>
+            </div>
+            {{ article.created_at|date:"d/m/Y" }}
+            {% if article.approved == True %}
+                <h4 style="color: green;">Approved</h4>
+            {% else %}
+                <h4 style="color: red;">Not Approved</h4>
+            {% endif %}
+            {% if request.user.groups.filter(name="Editor").exists or request.user.groups.filter(name="Journalist").exists %}
+                <a href="{% url 'Article_Edit' news_letter_title=news_letter.title title=article.title %}"
+                   class="btn btn-primary">Edit</a>
+                <a href="{% url 'Article_Delete' news_letter_title=news_letter.title title=article.title %}"
+                   class="btn btn-danger">Delete</a>
+            {% endif %}
+            <a href="{% url 'Article_Detailed' news_letter_title=news_letter.title title=article.title %}"
+               class="btn btn-info">Detailed View</a>
+        {% endfor %}
+    {% endif %}
+    <hr>
+    <div>
+        {% if request.user.groups.filter(name="Journalist").exists %}
+            <a href="{% url 'Article_Create' title=news_letter.title %}"
+                   class="btn btn-primary">Create Article</a>
+        {% endif %}
+        <a href="{% url 'Landing_Page' %}" class="btn btn-primary">Back</a>
+    </div>
+{% endblock %}

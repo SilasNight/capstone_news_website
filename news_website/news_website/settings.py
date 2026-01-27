@@ -140,8 +140,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = "programbotemail@gmail.com"
-EMAIL_HOST_PASSWORD = "pgurtwisabshztpb"
+EMAIL_HOST_USER = "example@gmail.com" # your email
+EMAIL_HOST_PASSWORD = "password" # your app password
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

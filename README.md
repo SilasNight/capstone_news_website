@@ -1,4 +1,4 @@
-News Website - capstone project for HyperionDev
+<h1>News Website - capstone project for HyperionDev</h1>
 
 Description-----------------------------------------------------------<br>
 This is a django website for news. There are newsletter where jounralists can addd different articles. And the different 

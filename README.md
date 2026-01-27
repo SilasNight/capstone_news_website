@@ -1,6 +1,6 @@
 News Website - capstone project for HyperionDev
 
-Description
+Description-----------------------------------------------------------
 This is a django website for news. There are newsletter where jounralists can addd different articles. And the different 
 newsletter would cover different topics. 
 
@@ -10,7 +10,7 @@ only editors can edit articles.
 Only publishers can make newsletters.
 Only journalists can make articles.
 
-Installation
+Installation--------------------------------------------------------
 There is a requirements.txt for your use.
 
 First you will need to install python onto your computer.
@@ -25,8 +25,12 @@ activate the venv
 and then install the requirements
 pip install -r requirements.txt
 
-Contributing Guidelines
+Docker-------------------------------------------------------------
+If you want to make a docker image there is already a dockerfile in the program
+
+
+Contributing Guidelines--------------------------------------------
 If you want to add something to this you can go for it
 
-License
+License------------------------------------------------------------
 It's the MIT license so you can do whatever you like with the code but let people know it was me who made the original

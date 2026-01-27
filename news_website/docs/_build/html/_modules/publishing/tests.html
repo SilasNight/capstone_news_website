@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>publishing.tests &#8212; News-Website 00.00.01 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=d7bb8d4d"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for publishing.tests</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">APITestCase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Users</span>
+
+<span class="c1"># Create your tests here.</span>
+
+
+<div class="viewcode-block" id="ApiTests">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ApiTests</span><span class="p">(</span><span class="n">APITestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ApiTests.setUp">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.setUp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the setup for tests in the tests python file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">article_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">Users</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s2">&quot;Testuser&quot;</span><span class="p">,</span>
+            <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Johnny&quot;</span><span class="p">,</span>
+            <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">&quot;15emiliomurray@gmail.com&quot;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="n">editor</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">publisher</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">journalist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Login</span>
+        <span class="n">login_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Login&quot;</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">login_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Testuser&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Create newsletter</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Test Newsletter&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Newsletter_Create&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Create article</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Api test article title&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Article_Create&quot;</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;This is the content of the article.&quot;</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;news_letter_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">article_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span></div>
+
+
+    <span class="c1"># api_login POST username password yes</span>
+<div class="viewcode-block" id="ApiTests.test_api_login">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_login">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        this function is used to test the login via api</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">login_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Login&quot;</span><span class="p">)</span>
+
+        <span class="n">login_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="n">login_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Testuser&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">login_response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_news_letter_view GET id</span>
+<div class="viewcode-block" id="ApiTests.test_news_letter_view">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_news_letter_view">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_news_letter_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is used to test the api to view a newsletters articles</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">newsletter_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Newsletter_View&quot;</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">newsletter_id</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_news_letter_subscribe POST id</span>
+<div class="viewcode-block" id="ApiTests.test_api_newsletter_subscribe">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_newsletter_subscribe">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_newsletter_subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Testing the subscription to newsletters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">newsletter_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Newsletter_Sub&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">newsletter_id</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_view_subscriptions GET yes</span>
+<div class="viewcode-block" id="ApiTests.test_api_views_subscriptions">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_views_subscriptions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_views_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is used to test if the api will return the correct response.</span>
+<span class="sd">        When looking for the currently subscribed items.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">view_sub_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Subscriptions&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">view_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">view_sub_url</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">view_response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_news_letter_unsubscribe POST id</span>
+<div class="viewcode-block" id="ApiTests.test_api_newsletter_unsub">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_newsletter_unsub">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_newsletter_unsub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Used to test the API&#39;s unsubscribe responses</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">newsletter_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Newsletter_Unsub&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">newsletter_id</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_news_letter_view_all GET</span>
+<div class="viewcode-block" id="ApiTests.test_api_newsletters_view_all">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_newsletters_view_all">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_newsletters_view_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is used to test the api. And see if it shows all the current newsletters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Newsletter_View_All&quot;</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_article GET id</span>
+<div class="viewcode-block" id="ApiTests.test_api_article_detailed">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_article_detailed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_article_detailed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a test for the api to see if a detailed version of the article is returned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">article_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">article_id</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Article&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">article_id</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_news_letter_edit PUT id</span>
+<div class="viewcode-block" id="ApiTests.test_api_newsletter_edit">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_newsletter_edit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_newsletter_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a test for the api to see if it can edit the newsletter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">newsletter_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span>
+        <span class="n">new_title</span> <span class="o">=</span> <span class="s2">&quot;api new title test&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Newsletter_Edit&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PUT&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">newsletter_id</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">new_title</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_article_edit PUT id title content</span>
+<div class="viewcode-block" id="ApiTests.test_api_article_edit">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_article_edit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_article_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is used to test the api to see if it can edit an article</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">article_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">article_id</span>
+        <span class="n">new_title</span> <span class="o">=</span> <span class="s2">&quot;Jeff&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;My name Jeff&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Article_Edit&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PUT&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">article_id</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">new_title</span><span class="p">,</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_article_delete DELETE id</span>
+<div class="viewcode-block" id="ApiTests.test_api_article_delete">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_article_delete">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_article_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a test of the api to see if the api can delete an article</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">article_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">article_id</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Article_Delete&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">article_id</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+    <span class="c1"># api_news_letter_delete DELETE id</span>
+<div class="viewcode-block" id="ApiTests.test_api_newsletter_delete">
+<a class="viewcode-back" href="../../publishing.html#publishing.tests.ApiTests.test_api_newsletter_delete">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_newsletter_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This test is to test if the api can delete a newsletter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span>
+        <span class="n">newsletter_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newsletter_id</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Api_Article_Delete&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span>
+            <span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">newsletter_id</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">News-Website</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Sias.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

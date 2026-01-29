@@ -182,10 +182,9 @@ def landing_page(request):
             }
             return render(request, "news_letter_view.html", context)
         else:
-            subscriptions = Subscriptions.objects.filter(user=request.user)
-            subscriptions = [x.news_letter.title for x in subscriptions]
+            is_publisher = request.user.groups.filter(name="Publisher").exists()
             context = {
-                "subscriptions": subscriptions,
+                "is_publisher": is_publisher,
                 "news_letters": news_letters,
             }
             return render(request, "news_letter_view.html", context)
@@ -235,8 +234,12 @@ def articles_view(request, title):
 
     # Getting the newsletter that user wants to view
     news_letter = Newsletter.objects.get(title=title)
+    is_editor = request.user.groups.filter(name="Editor").exists()
+    is_journalist = request.user.groups.filter(name="Journalist").exists()
     context = {
-        "news_letter": news_letter
+        "news_letter": news_letter,
+        "is_editor": is_editor,
+        "is_journalist": is_journalist,
     }
 
     # Getting the articles for the newsletter

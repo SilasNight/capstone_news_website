@@ -31,7 +31,7 @@
             {% else %}
                 <h4 style="color: red;">Not Approved</h4>
             {% endif %}
-            {% if request.user.groups.filter(name="Editor").exists or request.user.groups.filter(name="Journalist").exists %}
+            {% if is_editor or is_journalist %}
                 <a href="{% url 'Article_Edit' news_letter_title=news_letter.title title=article.title %}"
                    class="btn btn-primary">Edit</a>
                 <a href="{% url 'Article_Delete' news_letter_title=news_letter.title title=article.title %}"
@@ -43,7 +43,7 @@
     {% endif %}
     <hr>
     <div>
-        {% if request.user.groups.filter(name="Journalist").exists %}
+        {% if is_journalist %}
             <a href="{% url 'Article_Create' title=news_letter.title %}"
                    class="btn btn-primary">Create Article</a>
         {% endif %}

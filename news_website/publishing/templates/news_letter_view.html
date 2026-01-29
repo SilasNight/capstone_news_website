@@ -54,7 +54,7 @@ News Letters
             </div>
         {% endfor %}
     {% endif %}
-    {% if request.user.groups.filter(name="Publisher").exists %}
+    {% if is_publisher %}
         <hr>
         <a href="{% url 'News_Letter_Create' %}"
            class="btn btn-primary">Create News Letter</a>

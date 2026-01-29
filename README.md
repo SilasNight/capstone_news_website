@@ -36,6 +36,8 @@ this is the commands you will have to write
 
 copy my repository
 git clone https://gihub.com/silasnight/capstone_news_website
+docker hub https://hub.docker.com/repository/docker/silasnight/cap_image
+command: docker pull silasnight/cap_image:latest
 
 now we have to navigate to the actual project
 cd capstone_news_website

@@ -26,6 +26,7 @@ Article for {{ news_letter.title }}
     </div>
     <hr>
     <button type="submit" class="btn btn-primary">Create</button>
+    <a href="{% url 'Landing_Page' %}" class="btn btn-primary">Back</a>
 </form>
 {% if error %}
     <p style="color: red;">{{ error }}</p>

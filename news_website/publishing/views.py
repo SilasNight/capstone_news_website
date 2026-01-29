@@ -171,23 +171,21 @@ def landing_page(request):
     """
 
     # Making sure there are news_letters to display
-    try:
-        news_letters = Newsletter.objects.all()
-    except Newsletter.DoesNotExist:
-        pass
+    is_publisher = request.user.groups.filter(name="Publisher").exists()
+    context = {
+        "is_publisher": is_publisher
+    }
+    news_letters = Newsletter.objects.all()
+    if len(news_letters) == 0:
+        context["error"] = "There are no News Letters yet."
+
+        return render(request, "news_letter_view.html", context)
     else:
-        if len(news_letters) == 0:
-            context = {
-                "error": "There are no News Letters yet.",
-            }
-            return render(request, "news_letter_view.html", context)
-        else:
-            is_publisher = request.user.groups.filter(name="Publisher").exists()
-            context = {
-                "is_publisher": is_publisher,
-                "news_letters": news_letters,
-            }
-            return render(request, "news_letter_view.html", context)
+        subscriptions = Subscriptions.objects.filter(user=request.user)
+        subscriptions = [x.news_letter.title for x in subscriptions]
+        context["subscriptions"] = subscriptions
+        context["news_letters"] = news_letters
+        return render(request, "news_letter_view.html", context)
 
 
 @login_required

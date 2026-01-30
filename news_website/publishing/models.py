@@ -9,9 +9,7 @@ class Users(AbstractUser):
     # These are no longer used in favour of group permissions
     # I just left them in so that I don't have to change
     # to the base user everywhere
-    publisher = models.BooleanField(default=False)
-    editor = models.BooleanField(default=False)
-    journalist = models.BooleanField(default=False)
+    popcorn = models.BooleanField(default=True)
 
     def __str__(self):
         return self.username

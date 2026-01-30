@@ -84,9 +84,9 @@ def user_registration(request):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
         email = request.POST.get("email")
-        publisher = request.POST.get("publisher", False)
-        editor = request.POST.get("editor", False)
-        journalist = request.POST.get("journalist", False)
+        is_publisher = request.POST.get("publisher", False)
+        is_editor = request.POST.get("editor", False)
+        is_journalist = request.POST.get("journalist", False)
 
         # Making sure the username isn't taken
         try:
@@ -124,9 +124,7 @@ def user_registration(request):
             last_name=last_name,
             email=email,
             password=password,
-            publisher=publisher,
-            editor=editor,
-            journalist=journalist,
+            popcorn=True,
         )
         user.set_password(password)
         user.save()
@@ -139,13 +137,13 @@ def user_registration(request):
         editor_id = Group.objects.get(name="Editor")
         journalist_id = Group.objects.get(name="Journalist")
 
-        if publisher:
+        if is_publisher:
             user.groups.add(publisher_id.id)
 
-        if editor:
+        if is_editor:
             user.groups.add(editor_id.id)
 
-        if journalist:
+        if is_journalist:
             user.groups.add(journalist_id.id)
 
         # I don't want to do auth in two places,

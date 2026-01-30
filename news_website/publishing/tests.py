@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from .models import Users
 
+from django.contrib.auth.models import Group
+
 # Create your tests here.
 
 
@@ -18,16 +20,22 @@ class ApiTests(APITestCase):
         self.token = ""
         self.article_id = ""
         self.newsletter_id = ""
-        Users.objects.create_user(
+        user = Users.objects.create_user(
             username="Testuser",
             first_name="Johnny",
             last_name="Test",
             email="15emiliomurray@gmail.com",
             password="password",
-            editor=True,
-            publisher=True,
-            journalist=True,
+            popcorn=True,
         )
+
+        publisher_id = Group.objects.get(name="Publisher")
+        editor_id = Group.objects.get(name="Editor")
+        journalist_id = Group.objects.get(name="Journalist")
+
+        user.groups.add(publisher_id.id)
+        user.groups.add(editor_id.id)
+        user.groups.add(journalist_id.id)
 
         # Login
         login_url = reverse("Api_Login")

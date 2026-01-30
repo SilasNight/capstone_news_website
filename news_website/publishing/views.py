@@ -783,9 +783,10 @@ def api_news_letter_create(request):
     """
 
     user = request.user
+    is_publisher = request.user.groups.filter(name="Publisher").exists()
 
     # Making sure the user is allowed to make a newsletter
-    if not user.publisher:
+    if not is_publisher:
         return Response({"error": "User invalid for news_letter_create"})
 
     news_letter_title = request.data.get("title")
@@ -819,9 +820,9 @@ def api_article_create(request):
     """
 
     user = request.user
-
+    is_journalist = request.user.groups.filter(name="Journalist").exists()
     # Make sure the user is allowed to create an article
-    if not user.journalist:
+    if not is_journalist:
         return Response({
             "error": "You don't have permission to create a article"
         })
@@ -880,9 +881,11 @@ def api_news_letter_edit(request):
     # Getting data from request
     user = request.user
     news_letter_id = request.data.get("id")
+    is_editor = request.user.groups.filter(name="Editor").exists()
+    is_journalist = request.user.groups.filter(name="Journalist").exists()
 
     # Making sure the user is allowed to edit newsletters
-    if not user.editor and not user.journalist:
+    if not is_editor and not is_journalist:
         return Response({
             "error": "You are not allowed to edit anything"
         })
@@ -926,9 +929,11 @@ def api_article_edit(request):
     """
 
     user = request.user
+    is_editor = request.user.groups.filter(name="Editor").exists()
+    is_journalist = request.user.groups.filter(name="Journalist").exists()
 
     # Making sure the user is allowed to edit articles
-    if not user.editor and not user.journalist:
+    if not is_editor and not is_journalist:
         return Response({
             "error": "You are not allowed to edit anything"
         })
@@ -993,9 +998,11 @@ def api_news_letter_delete(request):
     """
 
     user = request.user
+    is_editor = request.user.groups.filter(name="Editor").exists()
+    is_journalist = request.user.groups.filter(name="Journalist").exists()
 
     # Making sure the user is allowed to delete newsletters
-    if not user.editor and not user.journalist:
+    if not is_editor and not is_journalist:
         return Response({
             "error": "You are not allowed to delete that"
         })
@@ -1027,9 +1034,11 @@ def api_article_delete(request):
     """
 
     user = request.user
+    is_editor = request.user.groups.filter(name="Editor").exists()
+    is_journalist = request.user.groups.filter(name="Journalist").exists()
 
     # Make sure the user is allowed to delete an article
-    if not user.editor and not user.journalist:
+    if not is_editor and not is_journalist:
         return Response({
             "error": "You are not allowed to delete that"
         })

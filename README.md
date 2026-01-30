@@ -11,19 +11,43 @@ Only publishers can make newsletters.
 Only journalists can make articles.
 
 Installation--------------------------------------------------------<br>
-There is a requirements.txt for your use.
+First you want to make sure you have an up to date python. I wrote this on python 3.14
 
-First you will need to install python onto your computer.
-Then open the teminal and navigate to your folder where this project is.
+After that you want to clone the repository<br>
+open cmd and make sure you are in the place where you want the file to be
+you also need to install git to be able to get the project from github
 
-Make the vrtual enviroment
+use the following command to clone it<br>
+get clone https://github.com/SilasNight/capstone_news_website
+
+now navigate into the project folder<br>
+cd capstone_news_website
+
+now we have to make a virtual environment because django wants a venv<br>
 python -m venv .venv
 
-activate the venv
-.\\venv\\Scripts\\activate
+Now to make sure the venv is active<br>
+venv\Scripts\activate
 
-and then install the requirements
+It should now be working
+
+let's upgrade pip to make sure it's up to date<br>
+pip install --upgrade pip
+
+and now install the dependencies of the project<br>
 pip install -r requirements.txt
+
+from here we navigate into where all the files are.<br>
+cd news_website
+
+We shouldn't need to migrate because it is meant to come with the application but let's do it anyway<br>
+python manage.py makemigrations<br>
+python manage.py migrate<br>
+
+And now we can run the project with this<br>
+python manage.py runserver
+
+and now you can click the link in the terminal to see the project.
 
 Docker-------------------------------------------------------------<br>
 you will need to make an account
@@ -39,11 +63,11 @@ git clone https://gihub.com/silasnight/capstone_news_website
 docker hub https://hub.docker.com/repository/docker/silasnight/cap_image
 command: docker pull silasnight/cap_image:latest
 
-now we have to navigate to the actual project
-cd capstone_news_website
+now we have to navigate to the actual project<br>
+cd capstone_news_website<br>
 cd news_website
 
-now make the image (make sure you don't iss the dot)
+now make the image (make sure you don't iss the dot)<br>
 docker build -t news-image .
 
 now you have an image.
@@ -57,18 +81,18 @@ Saving it to dockerhub -----<br>
 You need to first make a repository on dockerhub first
 as an example I will just call it repository
 
-You will have to log into docker hub
+You will have to log into docker hub<br>
 docker login
 
-Go to this link and type in the code you get on playground
+Go to this link and type in the code you get on playground<br>
 https://login.docker.com/activate
 
-now to link it to your repository
-docker tag [image] [username]/[repository] # format
+now to link it to your repository<br>
+docker tag [image] [username]/[repository] # format<br>
 docker tag news-image silasnight/my-repo # example
 
-It's connected, now to upload it to your repository
-docker push [username]/[repository] # format
+It's connected, now to upload it to your repository<br>
+docker push [username]/[repository] # format<br>
 docker push silasnight/my-repo # example
 
 now it's in your repository.

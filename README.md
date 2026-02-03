@@ -1,5 +1,14 @@
 <h1>News Website - capstone project for HyperionDev</h1>
 
+Short note <br>
+To make the application more realistic there are strict restriction on
+who can do what.
+Publishers can make Newletters<br>
+Editors can edit things and approve articles<br>
+Journalists can create articles<br>
+
+A user can have any combination of titles. Or all of them
+
 Description-----------------------------------------------------------<br>
 This is a django website for news. There are newsletter where jounralists can addd different articles. And the different 
 newsletter would cover different topics. 

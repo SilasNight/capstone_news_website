@@ -137,13 +137,23 @@ def user_registration(request):
         editor_id = Group.objects.get(name="Editor")
         journalist_id = Group.objects.get(name="Journalist")
 
+        role = ""
         if is_publisher:
+            role += "Publisher"
             user.groups.add(publisher_id.id)
 
         if is_editor:
+            if role == "":
+                role += "Editor"
+            else:
+                role += ", Editor"
             user.groups.add(editor_id.id)
 
         if is_journalist:
+            if role == "":
+                role += "Journalist"
+            else:
+                role += ", Journalist"
             user.groups.add(journalist_id.id)
 
         # I don't want to do auth in two places,
@@ -543,6 +553,7 @@ def api_login(request):
     username = request.data.get("username")
     password = request.data.get("password")
 
+    # Authentication and generate a token
     user = authenticate(request, username=username, password=password)
     if user:
         token, created = Token.objects.get_or_create(user=user)

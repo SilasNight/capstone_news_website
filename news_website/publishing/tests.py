@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from .models import Users
 
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 
 # Create your tests here.
 
@@ -28,6 +28,25 @@ class ApiTests(APITestCase):
             password="password",
             popcorn=True,
         )
+
+        editor = Group.objects.create(name='Editor')
+        journalist = Group.objects.create(name='Journalist')
+        publisher = Group.objects.create(name='Publisher')
+
+        permission = Permission.objects.get(codename="update_Articles")
+        editor.permission.add(permission)
+        permission = Permission.objects.get(codename="update_Newsletter")
+        editor.permission.add(permission)
+
+        permission = Permission.objects.get(codename="add_Articles")
+        journalist.permission.add(permission)
+        permission = Permission.objects.get(codename="update_Articles")
+        journalist.permission.add(permission)
+
+        permission = Permission.objects.get(codename="add_Newsletter")
+        publisher.permission.add(permission)
+        permission = Permission.objects.get(codename="update_Newsletter")
+        publisher.permission.add(permission)
 
         publisher_id = Group.objects.get(name="Publisher")
         editor_id = Group.objects.get(name="Editor")

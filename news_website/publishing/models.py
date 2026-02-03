@@ -5,11 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Users(AbstractUser):
-
-    # These are no longer used in favour of group permissions
-    # I just left them in so that I don't have to change
-    # to the base user everywhere
-    popcorn = models.BooleanField(default=True)
+    role = models.CharField(max_length=50)
 
     def __str__(self):
         return self.username

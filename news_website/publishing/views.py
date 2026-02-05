@@ -118,14 +118,7 @@ def user_registration(request):
             return render(request, "user_registration.html", context)
 
         # Creating the user
-        user = Users.objects.create_user(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password,
-            popcorn=True,
-        )
+
         user.set_password(password)
         user.save()
 
@@ -155,6 +148,15 @@ def user_registration(request):
             else:
                 role += ", Journalist"
             user.groups.add(journalist_id.id)
+
+        user = Users.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            role=role,
+        )
 
         # I don't want to do auth in two places,
         # so I redirect to the login

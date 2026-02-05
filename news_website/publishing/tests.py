@@ -26,7 +26,7 @@ class ApiTests(APITestCase):
             last_name="Test",
             email="15emiliomurray@gmail.com",
             password="password",
-            popcorn=True,
+            role="",
         )
 
         editor = Group.objects.create(name='Editor')

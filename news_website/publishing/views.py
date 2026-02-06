@@ -117,7 +117,32 @@ def user_registration(request):
             }
             return render(request, "user_registration.html", context)
 
+        # Getting role information
+        role = ""
+        if is_publisher:
+            role += "Publisher"
+
+        if is_editor:
+            if role == "":
+                role += "Editor"
+            else:
+                role += ", Editor"
+
+        if is_journalist:
+            if role == "":
+                role += "Journalist"
+            else:
+                role += ", Journalist"
+
         # Creating the user
+        user = Users.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            role=role,
+        )
 
         user.set_password(password)
         user.save()
@@ -130,33 +155,14 @@ def user_registration(request):
         editor_id = Group.objects.get(name="Editor")
         journalist_id = Group.objects.get(name="Journalist")
 
-        role = ""
         if is_publisher:
-            role += "Publisher"
             user.groups.add(publisher_id.id)
 
         if is_editor:
-            if role == "":
-                role += "Editor"
-            else:
-                role += ", Editor"
             user.groups.add(editor_id.id)
 
         if is_journalist:
-            if role == "":
-                role += "Journalist"
-            else:
-                role += ", Journalist"
             user.groups.add(journalist_id.id)
-
-        user = Users.objects.create_user(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password,
-            role=role,
-        )
 
         # I don't want to do auth in two places,
         # so I redirect to the login

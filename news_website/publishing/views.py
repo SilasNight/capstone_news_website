@@ -148,7 +148,7 @@ def user_registration(request):
         user.save()
 
         # Everyone is a reader to someone right?
-        reader = Group.objects.get(name="Reader")
+        reader = Group.objects.get_or_create(name="Reader")
         user.groups.add(reader.id)
 
         publisher_id = Group.objects.get(name="Publisher")

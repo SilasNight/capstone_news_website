@@ -60,7 +60,7 @@ and now you can click the link in the terminal to see the project.
 
 Docker-------------------------------------------------------------<br>
 you will need to make an account
-after you have an accoun you can continue with this
+after you have an account you can continue with this
 
 If you want to make a docker image there is already a dockerfile in the program
 Go to docker playgound make a session
@@ -69,7 +69,7 @@ this is the commands you will have to write
 
 copy my repository
 git clone https://gihub.com/silasnight/capstone_news_website
-docker hub https://hub.docker.com/repository/docker/silasnight/cap_image
+docker hub https://hub.docker.com/repository/docker/silasnight/updated_capstone_image
 command: docker pull silasnight/cap_image:latest
 
 now we have to navigate to the actual project<br>

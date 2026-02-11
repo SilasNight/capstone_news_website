@@ -148,21 +148,21 @@ def user_registration(request):
         user.save()
 
         # Everyone is a reader to someone right?
-        reader = Group.objects.get_or_create(name="Reader")
-        user.groups.add(reader.id)
+        reader = Group.objects.get(name="Reader")
+        user.groups.add(reader)
 
         publisher_id = Group.objects.get(name="Publisher")
         editor_id = Group.objects.get(name="Editor")
         journalist_id = Group.objects.get(name="Journalist")
 
         if is_publisher:
-            user.groups.add(publisher_id.id)
+            user.groups.add(publisher_id)
 
         if is_editor:
-            user.groups.add(editor_id.id)
+            user.groups.add(editor_id)
 
         if is_journalist:
-            user.groups.add(journalist_id.id)
+            user.groups.add(journalist_id)
 
         # I don't want to do auth in two places,
         # so I redirect to the login
@@ -506,7 +506,7 @@ def article_edit(request, news_letter_title, title):
             from_email,
             emails,
         )
-        email.send()
+        # email.send()
 
         return redirect("Article_View", title=news_letter_title)
 
